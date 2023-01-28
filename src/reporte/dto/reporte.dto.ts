@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { IsArray, IsBoolean, IsString } from 'class-validator';
+import { IsArray, IsString } from 'class-validator';
 
 export class CreateReporteDto {
   @IsString()
