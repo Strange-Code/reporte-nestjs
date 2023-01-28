@@ -10,6 +10,31 @@ export class ReporteRepository {
   ) {}
 
   async save(reporteEntity: ReporteEntity) {
-    this.reporteModel.add(reporteEntity);
+    let save = false;
+
+    try {
+      await this.reporteModel.add(reporteEntity);
+      save = true;
+      return save;
+    } catch (error) {
+      console.log(error);
+      return save;
+    }
+  }
+
+  async delete(id: string) {
+    let update = 500;
+
+    try {
+      await this.reporteModel.doc(id).update({ isActive: false });
+      update = 200;
+      return update;
+    } catch (error: any) {
+      console.log(JSON.stringify(error));
+      if (error.code == 5) {
+        update = 404;
+      }
+      return update;
+    }
   }
 }

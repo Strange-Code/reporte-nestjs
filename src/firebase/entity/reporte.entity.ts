@@ -9,6 +9,7 @@ export class ReporteEntity {
   subject: string;
   title: string;
   justification: string;
+  isActive: boolean;
 }
 
 export class AttachEntity {
