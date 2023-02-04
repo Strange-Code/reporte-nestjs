@@ -8,6 +8,7 @@ export class ReporteEntity {
   subject: string;
   title: string;
   justification: string;
+  status: string;
   isActive: boolean;
 }
 

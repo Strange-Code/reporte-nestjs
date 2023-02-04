@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { IsArray, IsEnum, IsString } from 'class-validator';
+import { IsArray, IsEnum, IsOptional, IsString } from 'class-validator';
 import { TipoReporte } from './tipoReporte.enum';
 
 export class CreateReporteDto {
@@ -18,6 +18,34 @@ export class CreateReporteDto {
   subject: string;
   @IsString()
   title: string;
+  @IsString()
+  justification: string;
+}
+
+export class UpdateReportDto {
+  @IsOptional()
+  @IsString()
+  reason: string;
+  @IsOptional()
+  @IsString()
+  deparment: string;
+  @IsOptional()
+  @IsString()
+  reportTo: string;
+  @IsOptional()
+  @IsArray()
+  @Type(() => CreateAttachDto)
+  attached: CreateAttachDto[];
+  @IsOptional()
+  @IsEnum(TipoReporte)
+  type: string;
+  @IsOptional()
+  @IsString()
+  subject: string;
+  @IsOptional()
+  @IsString()
+  title: string;
+  @IsOptional()
   @IsString()
   justification: string;
 }

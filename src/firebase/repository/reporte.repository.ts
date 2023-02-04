@@ -2,12 +2,11 @@ import {
   BadGatewayException,
   Inject,
   Injectable,
-  InternalServerErrorException,
   NotFoundException,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { CollectionReference } from '@google-cloud/firestore';
 import { ReporteEntity } from '../entity/reporte.entity';
+import { UpdateReportDto } from 'src/reporte/dto/reporte.dto';
 
 @Injectable()
 export class ReporteRepository {
@@ -28,7 +27,7 @@ export class ReporteRepository {
       }
 
       const reports = fireReports.docs.map((report) => {
-        const reportMap = report.data();
+        const reportMap = { id: report.id, ...report.data() };
         return reportMap;
       });
 
@@ -49,9 +48,27 @@ export class ReporteRepository {
       await this.reporteModel.add(reporteEntity);
       save = true;
       return save;
-    } catch (error) {
-      console.log(error);
-      return save;
+    } catch (error: any) {
+      console.log(JSON.stringify(error));
+      if (error.code == 7) {
+        throw new BadGatewayException();
+      }
+      throw error;
+    }
+  }
+
+  async update(id: string, reporte: UpdateReportDto) {
+    try {
+      await this.reporteModel.doc(id).update(reporte);
+      return true;
+    } catch (error: any) {
+      console.log(JSON.stringify(error));
+      if (error.code == 7) {
+        throw new BadGatewayException();
+      } else if (error.code == 5) {
+        throw new NotFoundException();
+      }
+      throw error;
     }
   }
 

@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
+import { ReportStatus } from 'src/common/report-status.enum';
 import { AppErrors } from 'src/common/response-status.const';
 import { ResponseDto } from 'src/common/response.dto';
 import { ReporteEntity } from 'src/firebase/entity/reporte.entity';
 import { ReporteRepository } from 'src/firebase/repository/reporte.repository';
-import { CreateReporteDto } from './dto/reporte.dto';
+import { CreateReporteDto, UpdateReportDto } from './dto/reporte.dto';
 
 @Injectable()
 export class ReporteService {
@@ -19,6 +20,7 @@ export class ReporteService {
 
     const reportEntity: ReporteEntity = {
       isActive: true,
+      status: ReportStatus.CREADO,
       ...report,
     };
     const responseFire = await this.reporteRepository.save(reportEntity);
@@ -35,6 +37,11 @@ export class ReporteService {
       };
     }
     return response;
+  }
+
+  async updateReport(id: string, report: UpdateReportDto) {
+    await this.reporteRepository.update(id, report);
+    return new ResponseDto(AppErrors.OK);
   }
 
   async deleteReport(id: string) {
