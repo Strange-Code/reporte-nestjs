@@ -32,6 +32,7 @@ export class FirestoreModule {
       },
       inject: [FirestoreOptionsProvider],
     };
+
     const collectionProviders = FirestoreCollectionProviders.map(
       (providerName) => ({
         provide: providerName,

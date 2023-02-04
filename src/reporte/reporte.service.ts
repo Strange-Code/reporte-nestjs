@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { response } from 'express';
-import { ReponseDto } from 'src/common/response.dto';
+import { AppErrors } from 'src/common/response-status.const';
+import { ResponseDto } from 'src/common/response.dto';
 import { ReporteEntity } from 'src/firebase/entity/reporte.entity';
 import { ReporteRepository } from 'src/firebase/repository/reporte.repository';
 import { CreateReporteDto } from './dto/reporte.dto';
@@ -9,8 +9,13 @@ import { CreateReporteDto } from './dto/reporte.dto';
 export class ReporteService {
   constructor(private readonly reporteRepository: ReporteRepository) {}
 
+  async getAllReports() {
+    const responseFire = await this.reporteRepository.getAll();
+    return new ResponseDto(AppErrors.OK, responseFire);
+  }
+
   async createReport(report: CreateReporteDto) {
-    let response: ReponseDto;
+    let response;
 
     const reportEntity: ReporteEntity = {
       isActive: true,
@@ -33,7 +38,7 @@ export class ReporteService {
   }
 
   async deleteReport(id: string) {
-    let response: ReponseDto;
+    let response;
     const responseFire = await this.reporteRepository.delete(id);
     if (responseFire == 200) {
       response = {

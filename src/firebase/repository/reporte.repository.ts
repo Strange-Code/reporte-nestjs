@@ -1,4 +1,11 @@
-import { Inject, Injectable } from '@nestjs/common';
+import {
+  BadGatewayException,
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { CollectionReference } from '@google-cloud/firestore';
 import { ReporteEntity } from '../entity/reporte.entity';
 
@@ -8,6 +15,32 @@ export class ReporteRepository {
     @Inject(ReporteEntity.collectionName)
     private reporteModel: CollectionReference<ReporteEntity>,
   ) {}
+
+  async getAll() {
+    try {
+      const fireReports = await this.reporteModel
+        .where('isActive', '==', true)
+        .select('type', 'reason', 'deparment', 'reportTo')
+        .get();
+
+      if (fireReports.empty) {
+        throw new NotFoundException();
+      }
+
+      const reports = fireReports.docs.map((report) => {
+        const reportMap = report.data();
+        return reportMap;
+      });
+
+      return reports;
+    } catch (error: any) {
+      console.log(JSON.stringify(error));
+      if (error.code == 7) {
+        throw new BadGatewayException();
+      }
+      throw error;
+    }
+  }
 
   async save(reporteEntity: ReporteEntity) {
     let save = false;

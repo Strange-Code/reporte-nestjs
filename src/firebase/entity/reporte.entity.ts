@@ -1,6 +1,5 @@
 export class ReporteEntity {
   static collectionName = 'NEST_REPORTE';
-
   reason: string;
   deparment: string;
   reportTo: string;
