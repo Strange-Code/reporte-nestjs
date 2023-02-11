@@ -19,7 +19,14 @@ export class ReporteRepository {
     try {
       const fireReports = await this.reporteModel
         .where('isActive', '==', true)
-        .select('type', 'reason', 'deparment', 'reportTo')
+        .select(
+          'type',
+          'reason',
+          'deparment',
+          'reportTo',
+          'title',
+          'justification',
+        )
         .get();
 
       if (fireReports.empty) {
