@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { CreateReporteDto, UpdateReportDto } from './dto/reporte.dto';
 import { ReporteService } from './reporte.service';
@@ -15,8 +16,8 @@ export class ReporteController {
   constructor(private readonly reporteService: ReporteService) {}
 
   @Get()
-  getAllReports() {
-    return this.reporteService.getAllReports();
+  getAllReports(@Query('status') status: string) {
+    return this.reporteService.getReportsByStatus(status);
   }
 
   @Post()

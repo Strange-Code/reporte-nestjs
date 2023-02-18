@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { ReportStatus } from 'src/common/report-status.enum';
 import { AppErrors } from 'src/common/response-status.const';
 import { ResponseDto } from 'src/common/response.dto';
@@ -10,8 +10,12 @@ import { CreateReporteDto, UpdateReportDto } from './dto/reporte.dto';
 export class ReporteService {
   constructor(private readonly reporteRepository: ReporteRepository) {}
 
-  async getAllReports() {
-    const responseFire = await this.reporteRepository.getAll();
+  async getReportsByStatus(status: string) {
+    if (status == undefined) {
+      throw new BadRequestException();
+    }
+
+    const responseFire = await this.reporteRepository.getAllByStatus(status);
     return new ResponseDto(AppErrors.OK, responseFire);
   }
 

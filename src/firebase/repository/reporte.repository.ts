@@ -15,15 +15,17 @@ export class ReporteRepository {
     private reporteModel: CollectionReference<ReporteEntity>,
   ) {}
 
-  async getAll() {
+  async getAllByStatus(status: string) {
     try {
       const fireReports = await this.reporteModel
         .where('isActive', '==', true)
+        .where('status', '==', status)
         .select(
           'type',
           'reason',
-          'deparment',
+          'department',
           'reportTo',
+          'status',
           'title',
           'justification',
         )
