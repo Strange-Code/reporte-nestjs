@@ -1,7 +1,7 @@
 export class ReporteEntity {
   static collectionName = 'NEST_REPORTE';
   reason: string;
-  deparment: string;
+  department: string;
   reportTo: string;
   attached: AttachEntity[];
   type: string;

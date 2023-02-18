@@ -1,12 +1,13 @@
 import { Type } from 'class-transformer';
 import { IsArray, IsEnum, IsOptional, IsString } from 'class-validator';
+import { ReportStatus } from 'src/common/report-status.enum';
 import { TipoReporte } from './tipoReporte.enum';
 
 export class CreateReporteDto {
   @IsString()
   reason: string;
   @IsString()
-  deparment: string;
+  department: string;
   @IsString()
   reportTo: string;
   @IsArray()
@@ -28,7 +29,7 @@ export class UpdateReportDto {
   reason: string;
   @IsOptional()
   @IsString()
-  deparment: string;
+  department: string;
   @IsOptional()
   @IsString()
   reportTo: string;
@@ -48,6 +49,9 @@ export class UpdateReportDto {
   @IsOptional()
   @IsString()
   justification: string;
+  @IsEnum(ReportStatus)
+  @IsOptional()
+  status: string;
 }
 
 export class CreateAttachDto {
